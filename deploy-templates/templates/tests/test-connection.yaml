@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "c-make-none-git.fullname" . }}-test-connection"
+  labels:
+    {{- include "c-make-none-git.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "c-make-none-git.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
